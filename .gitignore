@@ -1,0 +1,30 @@
+# Compiled Java classes
+*.class
+
+# Libraries and dependencies
+/lib/
+/target/
+
+# IDE-specific files (e.g., for IntelliJ IDEA)
+/.idea/
+
+# Build output
+/out/
+
+# macOS system files
+.DS_Store
+
+# Editor and IDE specific files
+*.log
+*.log.*
+*.iml
+.idea/
+
+# Eclipse-specific files
+.classpath
+.project
+.settings/
+
+# Gradle-specific files
+.gradle/
+build/
