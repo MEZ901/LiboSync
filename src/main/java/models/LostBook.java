@@ -4,6 +4,11 @@ public class LostBook {
     private long isbn;
     private int quantity;
 
+    public LostBook(long isbn, int quantity) {
+        this.isbn = isbn;
+        this.quantity = quantity;
+    }
+
     public long getIsbn() {
         return isbn;
     }

@@ -1,11 +1,21 @@
 package src.main.java.models;
 
+import src.main.java.enums.BookStatus;
+
 public class Book {
     private long isbn;
     private String title;
     private String author;
     private int quantity;
-    private String status;
+    private BookStatus status;
+
+    public Book(long isbn, String title, String author, int quantity, BookStatus status) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+        this.quantity = quantity;
+        this.status = status;
+    }
 
     public long getIsbn() {
         return isbn;
@@ -39,11 +49,11 @@ public class Book {
         this.quantity = quantity;
     }
 
-    public String getStatus() {
+    public BookStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(BookStatus status) {
         this.status = status;
     }
 }

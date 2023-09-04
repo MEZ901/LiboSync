@@ -6,6 +6,13 @@ public class Reservation {
     private String borrowingDate;
     private boolean hasBeenReturned;
 
+    public Reservation(long isbn, int memberId, String borrowingDate, boolean hasBeenReturned) {
+        this.isbn = isbn;
+        this.memberId = memberId;
+        this.borrowingDate = borrowingDate;
+        this.hasBeenReturned = hasBeenReturned;
+    }
+
     public long getIsbn() {
         return isbn;
     }

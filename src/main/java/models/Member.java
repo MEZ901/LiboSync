@@ -6,6 +6,13 @@ public class Member {
     private String gender;
     private int membershipNumber;
 
+    public Member(String firstName, String lastName, String gender, int membershipNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.membershipNumber = membershipNumber;
+    }
+
     public String getFirstName() {
         return firstName;
     }
