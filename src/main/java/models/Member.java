@@ -1,12 +1,14 @@
 package src.main.java.models;
 
+import src.main.java.enums.Gender;
+
 public class Member {
     private String firstName;
     private String lastName;
-    private String gender;
+    private Gender gender;
     private int membershipNumber;
 
-    public Member(String firstName, String lastName, String gender, int membershipNumber) {
+    public Member(String firstName, String lastName, Gender gender, int membershipNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
@@ -29,11 +31,11 @@ public class Member {
         this.lastName = lastName;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
