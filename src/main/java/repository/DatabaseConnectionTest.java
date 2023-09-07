@@ -1,9 +1,11 @@
 package src.main.java.repository;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import src.main.java.enums.BookStatus;
+import src.main.java.models.Book;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseConnectionTest {
     public static void main(String[] args) {
@@ -20,14 +22,25 @@ public class DatabaseConnectionTest {
         if (connection != null) {
             System.out.println("Database connection established successfully.");
 
-            try {
-                Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM book");
-
-                resultSet.close();
-                statement.close();
+            List<Book> books = new ArrayList<>();
+            try (Connection conn = dbConnection.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement("SELECT * FROM book");
+                 ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    long isbn = rs.getLong("isbn");
+                    String title = rs.getString("title");
+                    String author = rs.getString("author");
+                    int quantity = rs.getInt("quantity");
+                    String statusStr = rs.getString("status");
+                    BookStatus status = BookStatus.valueOf(statusStr);
+                    books.add(new Book(isbn, title, author, quantity, status));
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
+            }
+
+            for (Book book : books) {
+                System.out.println(book.getTitle());
             }
 
             dbConnection.closeConnection();
