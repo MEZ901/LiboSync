@@ -1,5 +1,7 @@
 package src.main.java;
 
+import src.main.java.repository.Model;
+
 import java.util.Scanner;
 
 public class LibroSyncApp {
@@ -16,7 +18,15 @@ public class LibroSyncApp {
             System.out.println("5. Search for books by title or author.");
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
+
             choice = s.nextInt();
+
+            switch (choice){
+                case 1:
+                    break;
+                case 2:
+                    break;
+            }
         } while (choice != 0);
     }
 }
