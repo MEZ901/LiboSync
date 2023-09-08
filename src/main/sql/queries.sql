@@ -1,16 +1,3 @@
-CREATE TABLE `book` (
-    isbn VARCHAR(255) UNIQUE,
-    title VARCHAR(255),
-    author VARCHAR(255),
-    quantity INT,
-    status ENUM(
-        'AVAILABLE',
-        'BORROWED',
-        'LOST'
-        ),
-    PRIMARY KEY (isbn)
-);
-
 CREATE TABLE `member` (
     id INT AUTO_INCREMENT,
     first_name VARCHAR(255),
@@ -18,6 +5,26 @@ CREATE TABLE `member` (
     gender VARCHAR(255),
     membership_number INT,
     PRIMARY KEY (id)
+);
+
+CREATE TABLE `author` (
+    id INT AUTO_INCREMENT,
+    name VARCHAR(255),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE `book` (
+    isbn VARCHAR(255) UNIQUE,
+    title VARCHAR(255),
+    author_id INT,
+    quantity INT,
+    status ENUM(
+        'AVAILABLE',
+        'BORROWED',
+        'LOST'
+        ),
+    PRIMARY KEY (isbn),
+    FOREIGN KEY (author_id) REFERENCES author(id)
 );
 
 CREATE TABLE `reservation` (
@@ -39,16 +46,34 @@ CREATE TABLE `lost_book` (
     FOREIGN KEY (isbn) REFERENCES book(isbn)
 );
 
+INSERT INTO `author` (
+    name
+) VALUES (
+    'Fyodor Dostoevsky'
+);
+
+INSERT INTO `author` (
+    name
+) VALUES (
+    'Gillian Flynn'
+);
+
+INSERT INTO `author` (
+    name
+) VALUES (
+    'Marcus Aurelius'
+);
+
 INSERT INTO `book` (
     isbn,
     title,
-    author,
+    author_id,
     quantity,
     status
 ) VALUES (
     '9783104027098',
     'Gone Girl',
-    'Gillian Flynn',
+    2,
     15,
     'AVAILABLE'
 );
@@ -56,13 +81,13 @@ INSERT INTO `book` (
 INSERT INTO `book` (
     isbn,
     title,
-    author,
+    author_id,
     quantity,
     status
 ) VALUES (
     '9788415957034',
     'Crime and Punishment',
-    'Fyodor Dostoevsky',
+    1,
     5,
     'AVAILABLE'
 );
@@ -70,13 +95,13 @@ INSERT INTO `book` (
 INSERT INTO `book` (
     isbn,
     title,
-    author,
+    author_id,
     quantity,
     status
 ) VALUES (
     '9783104012544',
     'Meditations',
-    'Marcus Aurelius',
+    3,
     0,
     'BORROWED'
 );

@@ -2,17 +2,23 @@ package src.main.java.models;
 
 import src.main.java.enums.Gender;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Member {
     private String firstName;
     private String lastName;
     private Gender gender;
     private int membershipNumber;
 
+    private List<Reservation> reservations;
+
     public Member(String firstName, String lastName, Gender gender, int membershipNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.membershipNumber = membershipNumber;
+        this.reservations = new ArrayList<>();
     }
 
     public String getFirstName() {
@@ -45,5 +51,13 @@ public class Member {
 
     public void setMembershipNumber(int membershipNumber) {
         this.membershipNumber = membershipNumber;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

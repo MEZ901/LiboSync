@@ -2,13 +2,13 @@ package src.main.java.models;
 
 public class Reservation {
     private String isbn;
-    private int memberId;
+    private Member member;
     private String borrowingDate;
     private boolean hasBeenReturned;
 
-    public Reservation(String isbn, int memberId, String borrowingDate, boolean hasBeenReturned) {
+    public Reservation(String isbn, Member member, String borrowingDate, boolean hasBeenReturned) {
         this.isbn = isbn;
-        this.memberId = memberId;
+        this.member = member;
         this.borrowingDate = borrowingDate;
         this.hasBeenReturned = hasBeenReturned;
     }
@@ -21,12 +21,12 @@ public class Reservation {
         this.isbn = isbn;
     }
 
-    public int getMemberId() {
-        return memberId;
+    public Member getMember() {
+        return member;
     }
 
-    public void setMemberId(int memberId) {
-        this.memberId = memberId;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
     public String getBorrowingDate() {

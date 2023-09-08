@@ -2,19 +2,25 @@ package src.main.java.models;
 
 import src.main.java.enums.BookStatus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Book {
     private String isbn;
     private String title;
-    private String author;
+    private Author author;
     private int quantity;
     private BookStatus status;
 
-    public Book(String isbn, String title, String author, int quantity, BookStatus status) {
+    private List<Reservation> reservations;
+
+    public Book(String isbn, String title, Author author, int quantity, BookStatus status) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
         this.quantity = quantity;
         this.status = status;
+        this.reservations = new ArrayList<>();
     }
 
     public String getIsbn() {
@@ -33,11 +39,11 @@ public class Book {
         this.title = title;
     }
 
-    public String getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
 
@@ -55,5 +61,13 @@ public class Book {
 
     public void setStatus(BookStatus status) {
         this.status = status;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }
