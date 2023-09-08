@@ -3,13 +3,13 @@ package src.main.java.models;
 import src.main.java.enums.BookStatus;
 
 public class Book {
-    private long isbn;
+    private String isbn;
     private String title;
     private String author;
     private int quantity;
     private BookStatus status;
 
-    public Book(long isbn, String title, String author, int quantity, BookStatus status) {
+    public Book(String isbn, String title, String author, int quantity, BookStatus status) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
@@ -17,11 +17,11 @@ public class Book {
         this.status = status;
     }
 
-    public long getIsbn() {
+    public String getIsbn() {
         return isbn;
     }
 
-    public void setIsbn(long isbn) {
+    public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 

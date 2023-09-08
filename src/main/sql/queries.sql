@@ -1,5 +1,5 @@
 CREATE TABLE `book` (
-    isbn BIGINT,
+    isbn VARCHAR(255) UNIQUE,
     title VARCHAR(255),
     author VARCHAR(255),
     quantity INT,
@@ -22,7 +22,7 @@ CREATE TABLE `member` (
 
 CREATE TABLE `reservation` (
     id INT AUTO_INCREMENT,
-    isbn BIGINT,
+    isbn VARCHAR(255),
     member_id INT,
     borrowing_date DATE,
     has_been_returned BOOLEAN,
@@ -33,7 +33,7 @@ CREATE TABLE `reservation` (
 
 CREATE TABLE `lost_book` (
     id INT AUTO_INCREMENT,
-    isbn BIGINT,
+    isbn VARCHAR(255),
     quantity INT,
     PRIMARY KEY (id),
     FOREIGN KEY (isbn) REFERENCES book(isbn)
@@ -46,7 +46,7 @@ INSERT INTO `book` (
     quantity,
     status
 ) VALUES (
-    9783104027098,
+    '9783104027098',
     'Gone Girl',
     'Gillian Flynn',
     15,
@@ -60,7 +60,7 @@ INSERT INTO `book` (
     quantity,
     status
 ) VALUES (
-    9788415957034,
+    '9788415957034',
     'Crime and Punishment',
     'Fyodor Dostoevsky',
     5,
@@ -74,7 +74,7 @@ INSERT INTO `book` (
     quantity,
     status
 ) VALUES (
-    9783104012544,
+    '9783104012544',
     'Meditations',
     'Marcus Aurelius',
     0,
@@ -124,7 +124,7 @@ INSERT INTO `reservation` (
     borrowing_date,
     has_been_returned
 ) VALUES (
-    9783104012544,
+    '9783104012544',
     1,
     '2023-09-03',
     false
@@ -136,8 +136,16 @@ INSERT INTO `reservation` (
     borrowing_date,
     has_been_returned
 ) VALUES (
-    9783104012544,
+    '9783104012544',
     2,
     '2023-09-01',
     false
+);
+
+INSERT INTO `lost_book` (
+    isbn,
+    quantity
+) VALUES (
+    '9783104012544',
+    1
 );

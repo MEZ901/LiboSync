@@ -1,23 +1,23 @@
 package src.main.java.models;
 
 public class Reservation {
-    private long isbn;
+    private String isbn;
     private int memberId;
     private String borrowingDate;
     private boolean hasBeenReturned;
 
-    public Reservation(long isbn, int memberId, String borrowingDate, boolean hasBeenReturned) {
+    public Reservation(String isbn, int memberId, String borrowingDate, boolean hasBeenReturned) {
         this.isbn = isbn;
         this.memberId = memberId;
         this.borrowingDate = borrowingDate;
         this.hasBeenReturned = hasBeenReturned;
     }
 
-    public long getIsbn() {
+    public String getIsbn() {
         return isbn;
     }
 
-    public void setIsbn(long isbn) {
+    public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 

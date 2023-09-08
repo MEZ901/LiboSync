@@ -38,4 +38,8 @@ public class Model {
 
         return resultList;
     }
+
+//    public List<Map<String, Object>> find(String table ,Map<String, Object> data) {}
+//
+//    public String insert(Map<String, Object> data){}
 }

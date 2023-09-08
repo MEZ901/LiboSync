@@ -1,19 +1,19 @@
 package src.main.java.models;
 
 public class LostBook {
-    private long isbn;
+    private String isbn;
     private int quantity;
 
-    public LostBook(long isbn, int quantity) {
+    public LostBook(String isbn, int quantity) {
         this.isbn = isbn;
         this.quantity = quantity;
     }
 
-    public long getIsbn() {
+    public String getIsbn() {
         return isbn;
     }
 
-    public void setIsbn(long isbn) {
+    public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 
