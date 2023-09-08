@@ -88,5 +88,44 @@ public class Model {
         return resultList;
     }
 
-//    public String insert(Map<String, Object> data){}
+    public String insert(String table, Map<String, Object> data) {
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        Connection connection = dbConnection.getConnection();
+
+        if (connection != null) {
+            try (Connection conn = connection) {
+                StringBuilder queryBuilder = new StringBuilder("INSERT INTO ");
+                queryBuilder.append(table).append(" (");
+
+                for (String key : data.keySet()) {
+                    queryBuilder.append(key).append(", ");
+                }
+                queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length());
+                queryBuilder.append(") VALUES (");
+
+                for (int i = 0; i < data.size(); i++) {
+                    queryBuilder.append("?, ");
+                }
+                queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length());
+                queryBuilder.append(")");
+
+                try (PreparedStatement stmt = conn.prepareStatement(queryBuilder.toString())) {
+                    int parameterIndex = 1;
+                    for (String key : data.keySet()) {
+                        stmt.setObject(parameterIndex++, data.get(key));
+                    }
+                    stmt.executeUpdate();
+                    return "Record inserted successfully.";
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return "Failed to insert the record.";
+            } finally {
+                dbConnection.closeConnection();
+            }
+        } else {
+            return "Failed to establish a database connection.";
+        }
+    }
+
 }
