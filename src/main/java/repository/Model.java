@@ -4,7 +4,13 @@ import java.sql.*;
 import java.util.*;
 
 public class Model {
-    public List<Map<String, Object>> getAll(String table) {
+    private String table;
+
+    public Model(String table) {
+        this.table = table;
+    }
+
+    public List<Map<String, Object>> getAll() {
         List<Map<String, Object>> resultList = new ArrayList<>();
 
         DatabaseConnection dbConnection = new DatabaseConnection();
@@ -12,7 +18,7 @@ public class Model {
 
         if (connection != null) {
             try (Connection conn = connection;
-                 PreparedStatement stmt = conn.prepareStatement("SELECT * FROM " + table);
+                 PreparedStatement stmt = conn.prepareStatement("SELECT * FROM " + this.table);
                  ResultSet rs = stmt.executeQuery()) {
 
                 ResultSetMetaData metaData = rs.getMetaData();
@@ -39,7 +45,7 @@ public class Model {
         return resultList;
     }
 
-    public List<Map<String, Object>> find(String table, Map<String, Object> data) {
+    public List<Map<String, Object>> find(Map<String, Object> data) {
         List<Map<String, Object>> resultList = new ArrayList<>();
 
         DatabaseConnection dbConnection = new DatabaseConnection();
@@ -48,7 +54,7 @@ public class Model {
         if (connection != null) {
             try (Connection conn = connection) {
                 StringBuilder queryBuilder = new StringBuilder("SELECT * FROM ");
-                queryBuilder.append(table).append(" WHERE ");
+                queryBuilder.append(this.table).append(" WHERE ");
 
                 for (String key : data.keySet()) {
                     queryBuilder.append(key).append(" = ? AND ");
@@ -88,14 +94,14 @@ public class Model {
         return resultList;
     }
 
-    public String insert(String table, Map<String, Object> data) {
+    public String insert(Map<String, Object> data) {
         DatabaseConnection dbConnection = new DatabaseConnection();
         Connection connection = dbConnection.getConnection();
 
         if (connection != null) {
             try (Connection conn = connection) {
                 StringBuilder queryBuilder = new StringBuilder("INSERT INTO ");
-                queryBuilder.append(table).append(" (");
+                queryBuilder.append(this.table).append(" (");
 
                 for (String key : data.keySet()) {
                     queryBuilder.append(key).append(", ");

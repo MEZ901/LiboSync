@@ -28,22 +28,22 @@ public class LibroSyncApp {
             System.out.print("Enter your choice: ");
 
             choice = s.nextInt();
-            Model model = new Model();
+//            Model model = new Model();
 
             switch (choice){
                 case 2:
-                    Map<String, Object> newData = new HashMap<>();
-                    newData.put("isbn", "3725301238253");
-                    newData.put("title", "test");
-                    newData.put("author_id", 1);
-                    newData.put("quantity", 2);
-                    newData.put("status", "AVAILABLE");
-
-                    String tableName = "book";
-
-                    String resultMessage = model.insert(tableName, newData);
-
-                    System.out.println(resultMessage);
+//                    Map<String, Object> newData = new HashMap<>();
+//                    newData.put("isbn", "3725301238253");
+//                    newData.put("title", "test");
+//                    newData.put("author_id", 1);
+//                    newData.put("quantity", 2);
+//                    newData.put("status", "AVAILABLE");
+//
+//                    String tableName = "book";
+//
+//                    String resultMessage = model.insert(tableName, newData);
+//
+//                    System.out.println(resultMessage);
 
                     break;
                 case 5:
