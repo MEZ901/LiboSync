@@ -1,6 +1,7 @@
 package src.main.java;
 
 import src.main.java.repository.Model;
+import src.main.java.services.LibraryService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,9 +29,13 @@ public class LibroSyncApp {
             System.out.print("Enter your choice: ");
 
             choice = s.nextInt();
+            LibraryService libraryService = new LibraryService();
 //            Model model = new Model();
 
             switch (choice){
+                case 1:
+                    libraryService.displayAllBooks();
+                    break;
                 case 2:
 //                    Map<String, Object> newData = new HashMap<>();
 //                    newData.put("isbn", "3725301238253");
