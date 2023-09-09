@@ -46,6 +46,50 @@ CREATE TABLE `lost_book` (
     FOREIGN KEY (isbn) REFERENCES book(isbn)
 );
 
+DELIMITER $$
+$$
+CREATE PROCEDURE `LibroSync`.`InsertAndReturn`(
+    IN table_name VARCHAR(255),
+    IN column_names VARCHAR(255),
+    IN column_values VARCHAR(255)
+)
+BEGIN
+    SET @sql_query = CONCAT('INSERT INTO ', table_name, ' (', column_names, ') VALUES (', column_values, ')');
+
+    PREPARE stmt FROM @sql_query;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+
+    IF table_name = 'book' THEN
+        SET @primary_key_value = (SELECT SUBSTRING_INDEX(column_values, ',', 1));
+        SET @select_query = CONCAT('SELECT * FROM ', table_name, ' WHERE isbn = ', @primary_key_value);
+
+    ELSE
+        SET @primary_key_value = LAST_INSERT_ID();
+        SET @select_query = CONCAT('SELECT * FROM ', table_name, ' WHERE id = @primary_key_value');
+    END IF;
+
+    PREPARE stmt FROM @select_query;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+
+END$$
+DELIMITER ;
+
+
+DELIMITER //
+CREATE TRIGGER before_reservation_insert
+    BEFORE INSERT ON reservation
+    FOR EACH ROW
+BEGIN
+    IF NEW.borrowing_date > CURDATE() THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Cannot insert reservation with borrowing date in the future';
+END IF;
+END;
+//
+DELIMITER ;
+
 INSERT INTO `author` (
     name
 ) VALUES (
@@ -129,19 +173,6 @@ INSERT INTO `member` (
     'Male',
     1002
 );
-
-DELIMITER //
-CREATE TRIGGER before_reservation_insert
-BEFORE INSERT ON reservation
-FOR EACH ROW
-BEGIN
-    IF NEW.borrowing_date > CURDATE() THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Cannot insert reservation with borrowing date in the future';
-    END IF;
-END;
-//
-DELIMITER ;
 
 INSERT INTO `reservation` (
     isbn,

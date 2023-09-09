@@ -3,10 +3,7 @@ package src.main.java;
 import src.main.java.repository.Model;
 import src.main.java.services.LibraryService;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class LibroSyncApp {
     public static void main(String[] args) {
@@ -37,18 +34,19 @@ public class LibroSyncApp {
                     libraryService.displayAllBooks();
                     break;
                 case 2:
-//                    Map<String, Object> newData = new HashMap<>();
-//                    newData.put("isbn", "3725301238253");
-//                    newData.put("title", "test");
-//                    newData.put("author_id", 1);
-//                    newData.put("quantity", 2);
-//                    newData.put("status", "AVAILABLE");
-//
-//                    String tableName = "book";
-//
-//                    String resultMessage = model.insert(tableName, newData);
-//
-//                    System.out.println(resultMessage);
+//                    libraryService.insertBook();
+                    Map<String, Object> newData = new LinkedHashMap<>();
+//                    newData.put("name", "\"chihaja\"");
+
+                    newData.put("isbn", "\"372522238253\"");
+                    newData.put("title", "\"test\"");
+                    newData.put("author_id", "1");
+                    newData.put("quantity", "2");
+                    newData.put("status", "\"AVAILABLE\"");
+
+                    List<Map<String, Object>> resultMessage = model.insert(newData);
+
+                    System.out.println(resultMessage);
 
                     break;
                 case 3:

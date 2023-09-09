@@ -3,6 +3,7 @@ package src.main.java.services;
 import src.main.java.repository.Model;
 import src.main.java.utilities.ConsoleClear;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -47,5 +48,25 @@ public class LibraryService {
                     break;
             }
         } while(choice != 1);
+    }
+
+    public void insertBook() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter ISBN: ");
+        String isbn = scanner.nextLine();
+
+        System.out.print("Enter Title: ");
+        String title = scanner.nextLine();
+
+        System.out.print("Enter Quantity: ");
+        int quantity = scanner.nextInt();
+
+        System.out.print("Enter Author Name: ");
+        scanner.nextLine();
+        String authorName = scanner.nextLine();
+
+        Map<String, Object> authorData = new HashMap<>();
+        authorData.put("name", authorName);
     }
 }
