@@ -30,7 +30,7 @@ public class LibroSyncApp {
 
             choice = s.nextInt();
             LibraryService libraryService = new LibraryService();
-//            Model model = new Model();
+            Model model = new Model("book");
 
             switch (choice){
                 case 1:
@@ -50,6 +50,23 @@ public class LibroSyncApp {
 //
 //                    System.out.println(resultMessage);
 
+                    break;
+                case 3:
+//                    Map<String, Object> dataToUpdate = new HashMap<>();
+//                    dataToUpdate.put("title", "test updated");
+//
+//                    Map<String, Object> whereCriteria = new HashMap<>();
+//                    whereCriteria.put("isbn", "3725301238253");
+//
+//                    String result = model.update(dataToUpdate, whereCriteria);
+//                    System.out.println(result);
+                    break;
+                case 4:
+//                    Map<String, Object> criteriaToDelete = new HashMap<>();
+//                    criteriaToDelete.put("isbn", "3725301238253");
+//
+//                    String result = model.delete(criteriaToDelete);
+//                    System.out.println(result);
                     break;
                 case 5:
 //                    Model model = new Model();

@@ -134,4 +134,92 @@ public class Model {
         }
     }
 
+    public String update(Map<String, Object> data, Map<String, Object> whereData) {
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        Connection connection = dbConnection.getConnection();
+
+        if (connection != null) {
+            try (Connection conn = connection) {
+                StringBuilder queryBuilder = new StringBuilder("UPDATE ");
+                queryBuilder.append(this.table).append(" SET ");
+
+                for (String key : data.keySet()) {
+                    queryBuilder.append(key).append(" = ?, ");
+                }
+                queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length());
+
+                queryBuilder.append(" WHERE ");
+
+                for (String key : whereData.keySet()) {
+                    queryBuilder.append(key).append(" = ? AND ");
+                }
+                queryBuilder.delete(queryBuilder.length() - 5, queryBuilder.length());
+
+                try (PreparedStatement stmt = conn.prepareStatement(queryBuilder.toString())) {
+                    int parameterIndex = 1;
+
+                    for (String key : data.keySet()) {
+                        stmt.setObject(parameterIndex++, data.get(key));
+                    }
+
+                    for (String key : whereData.keySet()) {
+                        stmt.setObject(parameterIndex++, whereData.get(key));
+                    }
+
+                    int rowsAffected = stmt.executeUpdate();
+                    if (rowsAffected > 0) {
+                        return "Record updated successfully.";
+                    } else {
+                        return "No matching records found for update.";
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return "Failed to update the record.";
+            } finally {
+                dbConnection.closeConnection();
+            }
+        } else {
+            return "Failed to establish a database connection.";
+        }
+    }
+
+    public String delete(Map<String, Object> whereData) {
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        Connection connection = dbConnection.getConnection();
+
+        if (connection != null) {
+            try (Connection conn = connection) {
+                StringBuilder queryBuilder = new StringBuilder("DELETE FROM ");
+                queryBuilder.append(table).append(" WHERE ");
+
+                for (String key : whereData.keySet()) {
+                    queryBuilder.append(key).append(" = ? AND ");
+                }
+                queryBuilder.delete(queryBuilder.length() - 5, queryBuilder.length());
+
+                try (PreparedStatement stmt = conn.prepareStatement(queryBuilder.toString())) {
+                    int parameterIndex = 1;
+
+                    for (String key : whereData.keySet()) {
+                        stmt.setObject(parameterIndex++, whereData.get(key));
+                    }
+
+                    int rowsAffected = stmt.executeUpdate();
+                    if (rowsAffected > 0) {
+                        return "Record(s) deleted successfully.";
+                    } else {
+                        return "No matching records found for deletion.";
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return "Failed to delete the record(s).";
+            } finally {
+                dbConnection.closeConnection();
+            }
+        } else {
+            return "Failed to establish a database connection.";
+        }
+    }
 }
