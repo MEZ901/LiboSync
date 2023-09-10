@@ -9,7 +9,8 @@ public class LibraryService {
     Model model = new Model("book");
 
     public void displayAllBooks() {
-        List<Map<String, Object>> books = model.getAll();
+        String joinCondition = "INNER JOIN author ON book.author_id = author.id";
+        List<Map<String, Object>> books = model.getAll(joinCondition);
         DisplayTable.displayBooks(books);
     }
 
@@ -53,6 +54,7 @@ public class LibraryService {
         Scanner scanner = new Scanner(System.in);
         Map<String, Object> whereCriteria = new HashMap<>();
         Map<String, Object> dataToUpdate = new HashMap<>();
+        String joinCondition = "INNER JOIN author ON book.author_id = author.id";
         List<Map<String, Object>> book;
 
         System.out.println("\n================= Update Book =================\n");
@@ -62,7 +64,7 @@ public class LibraryService {
             String isbn = scanner.nextLine();
             whereCriteria.put("isbn", isbn);
 
-            book = model.find(whereCriteria);
+            book = model.find(whereCriteria, joinCondition);
 
             if (book.isEmpty()) {
                 System.out.println("\n\u001B[31mThere's no book with this ISBN.\u001B[0m\n");
@@ -82,11 +84,11 @@ public class LibraryService {
         } while (book.isEmpty());
 
         System.out.println("+------------------------------------------------------------------------------+");
-        System.out.println("|       ISBN      |         Title        | Author ID |  Quantity |    Status   |");
+        System.out.println("|       ISBN      |         Title        |   Author  |  Quantity |    Status   |");
         System.out.println("+------------------------------------------------------------------------------+");
 
         System.out.printf("| %15s | %-20s | %9s |  %8s | %-11s |\n",
-                book.get(0).get("isbn"), book.get(0).get("title"), book.get(0).get("author_id"),
+                book.get(0).get("isbn"), book.get(0).get("title"), book.get(0).get("name"),
                 book.get(0).get("quantity"), book.get(0).get("status"));
 
         System.out.println("+------------------------------------------------------------------------------+\n");
@@ -155,7 +157,7 @@ public class LibraryService {
         } while (isReadyToUpdate == false);
 
         model.update(dataToUpdate, whereCriteria);
-        List<Map<String, Object>> bookAfterUpdate = model.find(whereCriteria);
+        List<Map<String, Object>> bookAfterUpdate = model.find(whereCriteria, joinCondition);
 
         System.out.println("\n\u001B[32mThe book has been updated successfully\u001B[0m");
         DisplayTable.displayBooks(bookAfterUpdate);
@@ -164,6 +166,7 @@ public class LibraryService {
     public void deleteBook() {
         Scanner scanner = new Scanner(System.in);
         Map<String, Object> whereCriteria = new HashMap<>();
+        String joinCondition = "INNER JOIN author ON book.author_id = author.id";
         List<Map<String, Object>> book;
 
         System.out.println("\n================= Delete Book =================\n");
@@ -173,7 +176,7 @@ public class LibraryService {
             String isbn = scanner.nextLine();
             whereCriteria.put("isbn", isbn);
 
-            book = model.find(whereCriteria);
+            book = model.find(whereCriteria, joinCondition);
 
             if (book.isEmpty()) {
                 System.out.println("\n\u001B[31mThere's no book with this ISBN.\u001B[0m\n");
@@ -193,11 +196,11 @@ public class LibraryService {
         } while (book.isEmpty());
 
         System.out.println("+------------------------------------------------------------------------------+");
-        System.out.println("|       ISBN      |         Title        | Author ID |  Quantity |    Status   |");
+        System.out.println("|       ISBN      |         Title        |   Author  |  Quantity |    Status   |");
         System.out.println("+------------------------------------------------------------------------------+");
 
         System.out.printf("| %15s | %-20s | %9s |  %8s | %-11s |\n",
-                book.get(0).get("isbn"), book.get(0).get("title"), book.get(0).get("author_id"),
+                book.get(0).get("isbn"), book.get(0).get("title"), book.get(0).get("name"),
                 book.get(0).get("quantity"), book.get(0).get("status"));
 
         System.out.println("+------------------------------------------------------------------------------+\n");

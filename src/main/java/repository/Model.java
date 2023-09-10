@@ -10,7 +10,7 @@ public class Model {
         this.table = table;
     }
 
-    public List<Map<String, Object>> getAll() {
+    public List<Map<String, Object>> getAll(String joinCondition) {
         List<Map<String, Object>> resultList = new ArrayList<>();
 
         DatabaseConnection dbConnection = new DatabaseConnection();
@@ -18,7 +18,7 @@ public class Model {
 
         if (connection != null) {
             try (Connection conn = connection;
-                 PreparedStatement stmt = conn.prepareStatement("SELECT * FROM " + this.table);
+                 PreparedStatement stmt = conn.prepareStatement("SELECT * FROM " + this.table + " " + ((joinCondition != null) ? joinCondition : ""));
                  ResultSet rs = stmt.executeQuery()) {
 
                 ResultSetMetaData metaData = rs.getMetaData();
@@ -45,7 +45,7 @@ public class Model {
         return resultList;
     }
 
-    public List<Map<String, Object>> find(Map<String, Object> data) {
+    public List<Map<String, Object>> find(Map<String, Object> data, String joinCondition) {
         List<Map<String, Object>> resultList = new ArrayList<>();
 
         DatabaseConnection dbConnection = new DatabaseConnection();
@@ -54,7 +54,13 @@ public class Model {
         if (connection != null) {
             try (Connection conn = connection) {
                 StringBuilder queryBuilder = new StringBuilder("SELECT * FROM ");
-                queryBuilder.append(this.table).append(" WHERE ");
+                queryBuilder.append(this.table).append(" ");
+
+                if (joinCondition != null) {
+                    queryBuilder.append(joinCondition).append(" ");
+                }
+
+                queryBuilder.append("WHERE ");
 
                 for (String key : data.keySet()) {
                     queryBuilder.append(key).append(" = ? AND ");

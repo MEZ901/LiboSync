@@ -2,13 +2,15 @@ package src.main.java;
 
 import src.main.java.repository.Model;
 import src.main.java.services.LibraryService;
+import src.main.java.services.SearchService;
 
 import java.util.*;
 
 public class LibroSyncApp {
     public static void main(String[] args) {
-//        Model model = new Model("book");
         LibraryService libraryService = new LibraryService();
+        SearchService searchService = new SearchService();
+
         Scanner scanner = new Scanner(System.in);
         int choice;
 
@@ -41,22 +43,9 @@ public class LibroSyncApp {
                     break;
                 case 4:
                     libraryService.deleteBook();
-//                    Map<String, Object> criteriaToDelete = new HashMap<>();
-//                    criteriaToDelete.put("isbn", "3725301238253");
-//
-//                    String result = model.delete(criteriaToDelete);
-//                    System.out.println(result);
                     break;
                 case 5:
-//                    Model model = new Model();
-//                    Map<String, Object> criteria = new HashMap<>();
-//                    criteria.put("isbn", "9783104012544");
-//
-//                    String tableName = "book";
-//
-//                    List<Map<String, Object>> results = model.find(tableName, criteria);
-//
-//                    System.out.println(results);
+                    searchService.searchByTitleOrAuthor();
                     break;
             }
         } while (choice != 0);

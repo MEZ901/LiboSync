@@ -13,7 +13,7 @@ public class AuthorService {
         Map<String, Object> criteria = new HashMap<>();
         criteria.put("name", name);
 
-        List<Map<String, Object>> author = model.find(criteria);
+        List<Map<String, Object>> author = model.find(criteria, null);
 
         if (!author.isEmpty()) {
             return (int) author.get(0).get("id");
