@@ -3,10 +3,7 @@ package src.main.java.services;
 import src.main.java.repository.Model;
 import src.main.java.utilities.ConsoleClear;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class LibraryService {
     Model model = new Model("book");
@@ -34,7 +31,6 @@ public class LibraryService {
         System.out.println("0. Exit");
         do {
             System.out.print("Enter your choice: ");
-
             choice = s.nextInt();
 
             switch (choice) {
@@ -50,8 +46,11 @@ public class LibraryService {
         } while(choice != 1);
     }
 
-    public void insertBook() {
+    public void addBook() {
+        AuthorService author = new AuthorService();
         Scanner scanner = new Scanner(System.in);
+        Map<String, Object> bookData = new LinkedHashMap<>();
+        int choice;
 
         System.out.print("Enter ISBN: ");
         String isbn = scanner.nextLine();
@@ -66,11 +65,43 @@ public class LibraryService {
         scanner.nextLine();
         String authorName = scanner.nextLine();
 
-        Map<String, Object> authorData = new HashMap<>();
-        authorData.put("name", authorName);
-
-        AuthorService author = new AuthorService();
         int authorId = author.getAuthorIdOrCreateIfNotFound(authorName);
-        System.out.println(authorId);
+
+        bookData.put("isbn", "\"" + isbn + "\"");
+        bookData.put("title", "\"" + title + "\"");
+        bookData.put("quantity", quantity);
+        bookData.put("author_id", authorId);
+        bookData.put("status", "\"AVAILABLE\"");
+
+        List<Map<String, Object>> result = model.insert(bookData);
+
+        System.out.println("\n\u001B[32mThe book has been added successfully\u001B[0m");
+        System.out.println("+------------------------------------------------------------------------------+");
+        System.out.println("|  Quantity |       ISBN      |         Title        |   Author  |    Status   |");
+        System.out.println("+------------------------------------------------------------------------------+");
+
+        System.out.printf("|  %8s | %15s | %-20s | %-9s | %-11s |\n",
+                result.get(0).get("quantity"), result.get(0).get("isbn"), result.get(0).get("title"),
+                authorName, result.get(0).get("status"));
+
+        System.out.println("+------------------------------------------------------------------------------+\n");
+
+        System.out.println("1. Back to menu");
+        System.out.println("0. Exit");
+        do {
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+
+            switch (choice) {
+                case 0:
+                    System.exit(0);
+                    break;
+                case 1:
+                    break;
+                default:
+                    System.out.println("You can only choose between 1 or 0");
+                    break;
+            }
+        } while(choice != 1);
     }
 }

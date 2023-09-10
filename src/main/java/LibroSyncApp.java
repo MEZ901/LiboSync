@@ -34,7 +34,7 @@ public class LibroSyncApp {
                     libraryService.displayAllBooks();
                     break;
                 case 2:
-                    libraryService.insertBook();
+                    libraryService.addBook();
 //                    Map<String, Object> newData = new LinkedHashMap<>();
 
 //                    newData.put("name", "\"chihaja\"");

@@ -16,7 +16,7 @@ public class AuthorService {
         List<Map<String, Object>> author = model.find(criteria);
 
         if (!author.isEmpty()) {
-            return (int)author.get(0).get("id");
+            return (int) author.get(0).get("id");
         }
 
         Map<String, Object> newData = new HashMap<>();
