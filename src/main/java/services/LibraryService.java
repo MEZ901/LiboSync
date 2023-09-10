@@ -18,7 +18,7 @@ public class LibraryService {
         Scanner scanner = new Scanner(System.in);
         Map<String, Object> bookData = new LinkedHashMap<>();
 
-        System.out.println("\n================= Add New Book =================");
+        System.out.println("\n================= Add New Book =================\n");
 
         System.out.print("Enter ISBN: ");
         String isbn = scanner.nextLine();
@@ -55,10 +55,10 @@ public class LibraryService {
         Map<String, Object> dataToUpdate = new HashMap<>();
         List<Map<String, Object>> book;
 
-        System.out.println("\n================= Update Book =================");
+        System.out.println("\n================= Update Book =================\n");
 
         do {
-            System.out.print("\nEnter the ISBN of the book: ");
+            System.out.print("Enter the ISBN of the book: ");
             String isbn = scanner.nextLine();
             whereCriteria.put("isbn", isbn);
 
@@ -159,5 +159,71 @@ public class LibraryService {
 
         System.out.println("\n\u001B[32mThe book has been updated successfully\u001B[0m");
         DisplayTable.displayBooks(bookAfterUpdate);
+    }
+
+    public void deleteBook() {
+        Scanner scanner = new Scanner(System.in);
+        Map<String, Object> whereCriteria = new HashMap<>();
+        List<Map<String, Object>> book;
+
+        System.out.println("\n================= Delete Book =================\n");
+
+        do {
+            System.out.print("Enter the ISBN of the book: ");
+            String isbn = scanner.nextLine();
+            whereCriteria.put("isbn", isbn);
+
+            book = model.find(whereCriteria);
+
+            if (book.isEmpty()) {
+                System.out.println("\n\u001B[31mThere's no book with this ISBN.\u001B[0m\n");
+                System.out.println("1. Try again");
+                System.out.println("2. Back to menu");
+                System.out.print("Enter your choice: ");
+                int choice = scanner.nextInt();
+                scanner.nextLine();
+
+                switch (choice) {
+                    case 1:
+                        break;
+                    case 2:
+                        return;
+                }
+            }
+        } while (book.isEmpty());
+
+        System.out.println("+------------------------------------------------------------------------------+");
+        System.out.println("|       ISBN      |         Title        | Author ID |  Quantity |    Status   |");
+        System.out.println("+------------------------------------------------------------------------------+");
+
+        System.out.printf("| %15s | %-20s | %9s |  %8s | %-11s |\n",
+                book.get(0).get("isbn"), book.get(0).get("title"), book.get(0).get("author_id"),
+                book.get(0).get("quantity"), book.get(0).get("status"));
+
+        System.out.println("+------------------------------------------------------------------------------+\n");
+
+        int choice;
+
+        System.out.println("Once you delete this book you will be no longer able to get it back. Please make sure before delete.");
+        System.out.println("1. Delete");
+        System.out.println("2. Cancel");
+
+        do {
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    model.delete(whereCriteria);
+                    System.out.println("\n\u001B[32mThe book has been deleted successfully\u001B[0m");
+                    return;
+                case 2:
+                    break;
+                default:
+                    System.out.println("Invalid choice, please try again.");
+                    break;
+            }
+        } while (choice != 2);
     }
 }

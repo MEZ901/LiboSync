@@ -38,16 +38,9 @@ public class LibroSyncApp {
                     break;
                 case 3:
                     libraryService.updateBook();
-//                    Map<String, Object> dataToUpdate = new HashMap<>();
-//                    dataToUpdate.put("title", "test updated");
-//
-//                    Map<String, Object> whereCriteria = new HashMap<>();
-//                    whereCriteria.put("isbn", "3725301238253");
-//
-//                    String result = model.update(dataToUpdate, whereCriteria);
-//                    System.out.println(result);
                     break;
                 case 4:
+                    libraryService.deleteBook();
 //                    Map<String, Object> criteriaToDelete = new HashMap<>();
 //                    criteriaToDelete.put("isbn", "3725301238253");
 //
