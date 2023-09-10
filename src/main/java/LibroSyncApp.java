@@ -27,26 +27,27 @@ public class LibroSyncApp {
 
             choice = s.nextInt();
             LibraryService libraryService = new LibraryService();
-            Model model = new Model("book");
+//            Model model = new Model("book");
 
             switch (choice){
                 case 1:
                     libraryService.displayAllBooks();
                     break;
                 case 2:
-//                    libraryService.insertBook();
-                    Map<String, Object> newData = new LinkedHashMap<>();
+                    libraryService.insertBook();
+//                    Map<String, Object> newData = new LinkedHashMap<>();
+
 //                    newData.put("name", "\"chihaja\"");
 
-                    newData.put("isbn", "\"372522238253\"");
-                    newData.put("title", "\"test\"");
-                    newData.put("author_id", "1");
-                    newData.put("quantity", "2");
-                    newData.put("status", "\"AVAILABLE\"");
-
-                    List<Map<String, Object>> resultMessage = model.insert(newData);
-
-                    System.out.println(resultMessage);
+//                    newData.put("isbn", "\"372522238253\"");
+//                    newData.put("title", "\"test\"");
+//                    newData.put("author_id", "1");
+//                    newData.put("quantity", "2");
+//                    newData.put("status", "\"AVAILABLE\"");
+//
+//                    List<Map<String, Object>> resultMessage = model.insert(newData);
+//
+//                    System.out.println(resultMessage);
 
                     break;
                 case 3:

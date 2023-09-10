@@ -68,5 +68,9 @@ public class LibraryService {
 
         Map<String, Object> authorData = new HashMap<>();
         authorData.put("name", authorName);
+
+        AuthorService author = new AuthorService();
+        int authorId = author.getAuthorIdOrCreateIfNotFound(authorName);
+        System.out.println(authorId);
     }
 }
