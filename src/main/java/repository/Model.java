@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.*;
 
 public class Model {
-    private String table;
+    private final String table;
 
     public Model(String table) {
         this.table = table;
@@ -159,7 +159,6 @@ public class Model {
 
         return resultList;
     }
-
 
     public String update(Map<String, Object> data, Map<String, Object> whereData) {
         DatabaseConnection dbConnection = new DatabaseConnection();

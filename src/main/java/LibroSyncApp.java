@@ -7,7 +7,9 @@ import java.util.*;
 
 public class LibroSyncApp {
     public static void main(String[] args) {
-        Scanner s = new Scanner(System.in);
+//        Model model = new Model("book");
+        LibraryService libraryService = new LibraryService();
+        Scanner scanner = new Scanner(System.in);
         int choice;
 
         do {
@@ -23,11 +25,9 @@ public class LibroSyncApp {
             System.out.println("|     5    | Search for books by title/author |");
             System.out.println("|     0    | Exit                             |");
             System.out.println("+---------------------------------------------+\n");
-            System.out.print("Enter your choice: ");
 
-            choice = s.nextInt();
-            LibraryService libraryService = new LibraryService();
-//            Model model = new Model("book");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
 
             switch (choice){
                 case 1:
@@ -35,22 +35,9 @@ public class LibroSyncApp {
                     break;
                 case 2:
                     libraryService.addBook();
-//                    Map<String, Object> newData = new LinkedHashMap<>();
-
-//                    newData.put("name", "\"chihaja\"");
-
-//                    newData.put("isbn", "\"372522238253\"");
-//                    newData.put("title", "\"test\"");
-//                    newData.put("author_id", "1");
-//                    newData.put("quantity", "2");
-//                    newData.put("status", "\"AVAILABLE\"");
-//
-//                    List<Map<String, Object>> resultMessage = model.insert(newData);
-//
-//                    System.out.println(resultMessage);
-
                     break;
                 case 3:
+                    libraryService.updateBook();
 //                    Map<String, Object> dataToUpdate = new HashMap<>();
 //                    dataToUpdate.put("title", "test updated");
 //
