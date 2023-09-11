@@ -19,6 +19,21 @@ public class DisplayTable {
         System.out.println("+-----------------------------------------------------------------------------------------+\n");
     }
 
+    public static void displayMembers(List<Map<String, Object>> members) {
+        System.out.println("+------------------------------------------------------------------------------------+");
+        System.out.println("|   Member ID   |   First Name   |   Last Name   |   Gender   |   Membership Number  |");
+        System.out.println("+------------------------------------------------------------------------------------+");
+
+        for (Map<String, Object> row : members) {
+            System.out.printf("|  %12s | %-14s | %-13s | %-10s |  %19s |\n",
+                    row.get("id"), row.get("first_name"), row.get("last_name"),
+                    row.get("gender"), row.get("membership_number"));
+        }
+
+        System.out.println("+------------------------------------------------------------------------------------+\n");
+
+    }
+
     public static void callToAction() {
         Scanner scanner = new Scanner(System.in);
         int ch;

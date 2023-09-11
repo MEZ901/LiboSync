@@ -69,7 +69,7 @@ public class LibroSyncApp {
                     System.out.println("Bye.");
                     break;
                 default:
-                    System.out.println("\n\u001B[31mInvalid choice.\u001B[0m");
+                    System.out.println("Invalid choice, please try again.");
                     break;
             }
         } while (choice != 0);

@@ -193,22 +193,28 @@ public class LibraryService {
                     System.out.println("\n\u001B[31mThere's no book with this ISBN.\u001B[0m\n");
                     System.out.println("1. Try again");
                     System.out.println("2. Back to menu");
-                    System.out.print("Enter your choice: ");
-                    int choice = scanner.nextInt();
-                    scanner.nextLine();
 
-                    switch (choice) {
-                        case 1:
-                            break;
-                        case 2:
-                            return book;
-                    }
+                    int choice;
+                    do {
+                        System.out.print("Enter your choice: ");
+                        choice = scanner.nextInt();
+                        scanner.nextLine();
+
+                        switch (choice) {
+                            case 1:
+                                break;
+                            case 2:
+                                return book;
+                            default:
+                                System.out.println("Invalid choice, please try again.");
+                                break;
+                        }
+                    } while(choice != 1);
                 }
             } while (book.isEmpty());
         } else {
             book = model.find(whereCriteria, joinCondition);
         }
-
 
         return book;
     }
