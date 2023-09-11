@@ -18,7 +18,6 @@
 *.log
 *.log.*
 *.iml
-.idea/
 
 # Eclipse-specific files
 .classpath

@@ -219,7 +219,15 @@ public class LibraryService {
         return book;
     }
 
-    public void incrementBookQuantity() {}
+    public void decrementBookQuantity(Map<String, Object> whereData, int currQuantity, int decrementBy) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("quantity", currQuantity - decrementBy);
+        model.update(data, whereData);
+    }
 
-    public void decrementBookQuantity() {}
+    public void incrementBookQuantity(Map<String, Object> whereData, int currQuantity, int incrementBy) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("quantity", currQuantity + incrementBy);
+        model.update(data, whereData);
+    }
 }

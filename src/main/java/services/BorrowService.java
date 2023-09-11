@@ -22,7 +22,8 @@ public class BorrowService {
         if (book.isEmpty()) {
             return;
         } else if ((int) book.get(0).get("quantity") == 0) {
-            System.out.println("\n\u001B[31mThis book currently " + (book.get(0).get("status") == "BORROWED" ? "borrowed" : "lost") + " you can't make any reservation\u001B[0m\n");
+            System.out.println("\n\u001B[31mThis book currently " + (book.get(0).get("status").equals("BORROWED") ? "borrowed" : "lost") + " you can't make any reservation\u001B[0m\n");
+
             System.out.println("1. back to menu");
             System.out.println("0. Exit");
 
@@ -74,7 +75,6 @@ public class BorrowService {
 
                         switch (ch) {
                             case 1:
-                                // Get the current date
                                 Date currentDate = new Date();
                                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                                 String formattedDate = dateFormat.format(currentDate);
@@ -93,6 +93,7 @@ public class BorrowService {
                     } while(ch != 1);
 
                     model.insert(data);
+                    libraryService.decrementBookQuantity(bookCriteria, (int) book.get(0).get("quantity"), 1);
 
                     System.out.println("\n\u001B[32mThe reservation has been created successfully!\u001B[0m");
                     break;
