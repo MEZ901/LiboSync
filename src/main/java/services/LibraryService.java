@@ -12,6 +12,7 @@ public class LibraryService {
         String joinCondition = "INNER JOIN author ON book.author_id = author.id";
         List<Map<String, Object>> books = model.getAll(joinCondition);
         DisplayTable.displayBooks(books);
+        DisplayTable.callToAction();
     }
 
     public void addBook() {
@@ -46,7 +47,7 @@ public class LibraryService {
 
         System.out.println("\n\u001B[32mThe book has been added successfully\u001B[0m");
         DisplayTable.displayBooks(bookInserted);
-
+        DisplayTable.callToAction();
     }
 
     public void updateBook() {
@@ -54,44 +55,16 @@ public class LibraryService {
         Scanner scanner = new Scanner(System.in);
         Map<String, Object> whereCriteria = new HashMap<>();
         Map<String, Object> dataToUpdate = new HashMap<>();
-        String joinCondition = "INNER JOIN author ON book.author_id = author.id";
         List<Map<String, Object>> book;
 
         System.out.println("\n================= Update Book =================\n");
 
-        do {
-            System.out.print("Enter the ISBN of the book: ");
-            String isbn = scanner.nextLine();
-            whereCriteria.put("isbn", isbn);
+        book = findBook(whereCriteria);
+        if (book.isEmpty()) {
+            return;
+        }
 
-            book = model.find(whereCriteria, joinCondition);
-
-            if (book.isEmpty()) {
-                System.out.println("\n\u001B[31mThere's no book with this ISBN.\u001B[0m\n");
-                System.out.println("1. Try again");
-                System.out.println("2. Back to menu");
-                System.out.print("Enter your choice: ");
-                int choice = scanner.nextInt();
-                scanner.nextLine();
-
-                switch (choice) {
-                    case 1:
-                        break;
-                    case 2:
-                        return;
-                }
-            }
-        } while (book.isEmpty());
-
-        System.out.println("+------------------------------------------------------------------------------+");
-        System.out.println("|       ISBN      |         Title        |   Author  |  Quantity |    Status   |");
-        System.out.println("+------------------------------------------------------------------------------+");
-
-        System.out.printf("| %15s | %-20s | %9s |  %8s | %-11s |\n",
-                book.get(0).get("isbn"), book.get(0).get("title"), book.get(0).get("name"),
-                book.get(0).get("quantity"), book.get(0).get("status"));
-
-        System.out.println("+------------------------------------------------------------------------------+\n");
+        DisplayTable.displayBooks(book);
 
         int choice;
         boolean isReadyToUpdate = false;
@@ -157,53 +130,26 @@ public class LibraryService {
         } while (isReadyToUpdate == false);
 
         model.update(dataToUpdate, whereCriteria);
-        List<Map<String, Object>> bookAfterUpdate = model.find(whereCriteria, joinCondition);
+        List<Map<String, Object>> bookAfterUpdate = findBook(whereCriteria);
 
         System.out.println("\n\u001B[32mThe book has been updated successfully\u001B[0m");
         DisplayTable.displayBooks(bookAfterUpdate);
+        DisplayTable.callToAction();
     }
 
     public void deleteBook() {
         Scanner scanner = new Scanner(System.in);
         Map<String, Object> whereCriteria = new HashMap<>();
-        String joinCondition = "INNER JOIN author ON book.author_id = author.id";
         List<Map<String, Object>> book;
 
         System.out.println("\n================= Delete Book =================\n");
 
-        do {
-            System.out.print("Enter the ISBN of the book: ");
-            String isbn = scanner.nextLine();
-            whereCriteria.put("isbn", isbn);
+        book = findBook(whereCriteria);
+        if (book.isEmpty()) {
+            return;
+        }
 
-            book = model.find(whereCriteria, joinCondition);
-
-            if (book.isEmpty()) {
-                System.out.println("\n\u001B[31mThere's no book with this ISBN.\u001B[0m\n");
-                System.out.println("1. Try again");
-                System.out.println("2. Back to menu");
-                System.out.print("Enter your choice: ");
-                int choice = scanner.nextInt();
-                scanner.nextLine();
-
-                switch (choice) {
-                    case 1:
-                        break;
-                    case 2:
-                        return;
-                }
-            }
-        } while (book.isEmpty());
-
-        System.out.println("+------------------------------------------------------------------------------+");
-        System.out.println("|       ISBN      |         Title        |   Author  |  Quantity |    Status   |");
-        System.out.println("+------------------------------------------------------------------------------+");
-
-        System.out.printf("| %15s | %-20s | %9s |  %8s | %-11s |\n",
-                book.get(0).get("isbn"), book.get(0).get("title"), book.get(0).get("name"),
-                book.get(0).get("quantity"), book.get(0).get("status"));
-
-        System.out.println("+------------------------------------------------------------------------------+\n");
+        DisplayTable.displayBooks(book);
 
         int choice;
 
@@ -228,5 +174,42 @@ public class LibraryService {
                     break;
             }
         } while (choice != 2);
+    }
+
+    public List<Map<String, Object>> findBook(Map<String, Object> whereCriteria) {
+        Scanner scanner = new Scanner(System.in);
+        List<Map<String, Object>> book;
+        String joinCondition = "INNER JOIN author ON book.author_id = author.id";
+
+        if (whereCriteria.isEmpty()) {
+            do {
+                System.out.print("Enter the ISBN of the book: ");
+                String isbn = scanner.nextLine();
+                whereCriteria.put("isbn", isbn);
+
+                book = model.find(whereCriteria, joinCondition);
+
+                if (book.isEmpty()) {
+                    System.out.println("\n\u001B[31mThere's no book with this ISBN.\u001B[0m\n");
+                    System.out.println("1. Try again");
+                    System.out.println("2. Back to menu");
+                    System.out.print("Enter your choice: ");
+                    int choice = scanner.nextInt();
+                    scanner.nextLine();
+
+                    switch (choice) {
+                        case 1:
+                            break;
+                        case 2:
+                            return book;
+                    }
+                }
+            } while (book.isEmpty());
+        } else {
+            book = model.find(whereCriteria, joinCondition);
+        }
+
+
+        return book;
     }
 }

@@ -6,9 +6,6 @@ import java.util.Scanner;
 
 public class DisplayTable {
     public static void displayBooks(List<Map<String, Object>> books) {
-        Scanner scanner = new Scanner(System.in);
-        int ch;
-
         System.out.println("+-----------------------------------------------------------------------------------------+");
         System.out.println("|       ISBN      |         Title        |        Author        |  Quantity |    Status   |");
         System.out.println("+-----------------------------------------------------------------------------------------+");
@@ -20,6 +17,11 @@ public class DisplayTable {
         }
 
         System.out.println("+-----------------------------------------------------------------------------------------+\n");
+    }
+
+    public static void callToAction() {
+        Scanner scanner = new Scanner(System.in);
+        int ch;
 
         System.out.println("1. Back to menu");
         System.out.println("0. Exit");

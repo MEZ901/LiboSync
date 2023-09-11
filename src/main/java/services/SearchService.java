@@ -18,5 +18,6 @@ public class SearchService {
         List<Map<String, Object>> result = searchRepository.searchBooks(searchQuery);
 
         DisplayTable.displayBooks(result);
+        DisplayTable.callToAction();
     }
 }
