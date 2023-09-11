@@ -218,4 +218,8 @@ public class LibraryService {
 
         return book;
     }
+
+    public void incrementBookQuantity() {}
+
+    public void decrementBookQuantity() {}
 }

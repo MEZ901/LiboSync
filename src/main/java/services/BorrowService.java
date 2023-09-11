@@ -15,12 +15,34 @@ public class BorrowService {
 
     public void borrowBook() {
         Scanner scanner = new Scanner(System.in);
-        Map<String, Object> bookCriteria = new HashMap<>();
         Map<String, Object> data = new HashMap<>();
+        Map<String, Object> bookCriteria = new HashMap<>();
 
         List<Map<String, Object>> book = libraryService.findBook(bookCriteria);
         if (book.isEmpty()) {
             return;
+        } else if ((int) book.get(0).get("quantity") == 0) {
+            System.out.println("\n\u001B[31mThis book currently " + (book.get(0).get("status") == "BORROWED" ? "borrowed" : "lost") + " you can't make any reservation\u001B[0m\n");
+            System.out.println("1. back to menu");
+            System.out.println("0. Exit");
+
+            int ch;
+            do {
+                System.out.print("Enter your choice: ");
+                ch = scanner.nextInt();
+                scanner.nextLine();
+
+                switch (ch) {
+                    case 1:
+                        return;
+                    case 0:
+                        System.exit(0);
+                        break;
+                    default:
+                        System.out.println("Invalid choice, please try again.");
+                        break;
+                }
+            } while(true);
         }
 
         DisplayTable.displayBooks(book);
