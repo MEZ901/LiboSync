@@ -254,4 +254,61 @@ public class Model {
             return "Failed to establish a database connection.";
         }
     }
+
+    public List<Map<String, Object>> callProcedure(String procedureName, Map<String, Object> procedureParams) {
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        DatabaseConnection dbConnection = new DatabaseConnection();
+        Connection connection = dbConnection.getConnection();
+
+        if (connection != null) {
+            try (Connection conn = connection) {
+                StringBuilder callBuilder = new StringBuilder("{call ");
+                callBuilder.append(procedureName).append("(");
+
+                int paramCount = procedureParams.size();
+                for (int i = 0; i < paramCount; i++) {
+                    callBuilder.append("?");
+                    if (i < paramCount - 1) {
+                        callBuilder.append(", ");
+                    }
+                }
+                callBuilder.append(")}");
+
+                CallableStatement callableStatement = conn.prepareCall(callBuilder.toString());
+
+                int parameterIndex = 1;
+                for (String key : procedureParams.keySet()) {
+                    callableStatement.setObject(parameterIndex++, procedureParams.get(key));
+                }
+
+                boolean hasResultSet = callableStatement.execute();
+
+                if (hasResultSet) {
+                    try (var rs = callableStatement.getResultSet()) {
+                        var metaData = rs.getMetaData();
+                        int columnCount = metaData.getColumnCount();
+
+                        while (rs.next()) {
+                            Map<String, Object> row = new HashMap<>();
+                            for (int i = 1; i <= columnCount; i++) {
+                                String columnName = metaData.getColumnName(i);
+                                Object columnValue = rs.getObject(i);
+                                row.put(columnName, columnValue);
+                            }
+                            result.add(row);
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                dbConnection.closeConnection();
+            }
+        } else {
+            System.out.println("Failed to establish a database connection.");
+        }
+
+        return result;
+    }
 }

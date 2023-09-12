@@ -223,11 +223,17 @@ public class LibraryService {
         Map<String, Object> data = new HashMap<>();
         data.put("quantity", currQuantity - decrementBy);
         model.update(data, whereData);
+        updateBookStatus(whereData);
     }
 
     public void incrementBookQuantity(Map<String, Object> whereData, int currQuantity, int incrementBy) {
         Map<String, Object> data = new HashMap<>();
         data.put("quantity", currQuantity + incrementBy);
         model.update(data, whereData);
+        updateBookStatus(whereData);
+    }
+
+    public void updateBookStatus(Map<String, Object> whereData) {
+        model.callProcedure("UpdateBookStatus", whereData);
     }
 }
