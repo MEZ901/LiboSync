@@ -5,9 +5,6 @@
 /lib/
 /target/
 
-# IDE-specific files (e.g., for IntelliJ IDEA)
-/.idea/
-
 # Build output
 /out/
 
