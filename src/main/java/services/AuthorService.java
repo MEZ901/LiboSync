@@ -22,7 +22,7 @@ public class AuthorService {
         Map<String, Object> newData = new HashMap<>();
         newData.put("name", "\"" + name + "\"");
 
-        List<Map<String, Object>> newAuthor = model.insert(newData);
+        List<Map<String, Object>> newAuthor = model.insertAndReturn(newData);
 
         return (int) newAuthor.get(0).get("id");
     }

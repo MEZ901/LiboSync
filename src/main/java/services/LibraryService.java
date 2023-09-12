@@ -43,7 +43,7 @@ public class LibraryService {
         bookData.put("author_id", authorId);
         bookData.put("status", "\"AVAILABLE\"");
 
-        List<Map<String, Object>> bookInserted = model.insert(bookData);
+        List<Map<String, Object>> bookInserted = model.insertAndReturn(bookData);
 
         System.out.println("\n\u001B[32mThe book has been added successfully\u001B[0m");
         DisplayTable.displayBooks(bookInserted);
