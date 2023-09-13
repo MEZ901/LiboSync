@@ -45,4 +45,41 @@ public class MemberService {
 
         return member;
     }
+
+    public List<Map<String, Object>> createMember() {
+        Scanner scanner = new Scanner(System.in);
+        Map<String,Object> data = new HashMap<>();
+
+        System.out.println("\n================= Create member =================\n");
+
+        System.out.print("First name: ");
+        String firstName = scanner.nextLine();
+
+        System.out.print("Last name: ");
+        String lastName = scanner.nextLine();
+
+        int gender;
+        do {
+            System.out.print("Gender (press 1 for male and 2 for female): ");
+            gender = scanner.nextInt();
+            scanner.nextLine();
+
+            if (gender != 1 && gender != 2) {
+                System.out.println("Please select 1 or 2");
+            }
+        } while (gender != 1 && gender != 2);
+
+        System.out.print("Membership number: ");
+        int membershipNumber = scanner.nextInt();
+        scanner.nextLine();
+
+        data.put("first_name", "\"" + firstName + "\"");
+        data.put("last_name", "\"" + lastName + "\"");
+        data.put("gender", gender == 1 ? "\"MALE\"" : "\"FEMALE\"");
+        data.put("membership_number", membershipNumber);
+
+        List<Map<String, Object>> member = model.insertAndReturn(data);
+
+        return member;
+    }
 }

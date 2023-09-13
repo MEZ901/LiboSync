@@ -129,10 +129,11 @@ public class LibraryService {
             }
         } while (isReadyToUpdate == false);
 
-        model.update(dataToUpdate, whereCriteria);
+        String result = model.update(dataToUpdate, whereCriteria);
+        updateBookStatus(whereCriteria);
         List<Map<String, Object>> bookAfterUpdate = findBook(whereCriteria);
 
-        System.out.println("\n\u001B[32mThe book has been updated successfully\u001B[0m");
+        System.out.println("\n\u001B[32m" + result + "\u001B[0m");
         DisplayTable.displayBooks(bookAfterUpdate);
         DisplayTable.callToAction();
     }
@@ -164,8 +165,8 @@ public class LibraryService {
 
             switch (choice) {
                 case 1:
-                    model.delete(whereCriteria);
-                    System.out.println("\n\u001B[32mThe book has been deleted successfully\u001B[0m");
+                    String result = model.delete(whereCriteria);
+                    System.out.println("\n\u001B[32m" + result + "\u001B[0m");
                     return;
                 case 2:
                     break;
