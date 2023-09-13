@@ -10,10 +10,14 @@ public class DisplayTable {
         System.out.println("|       ISBN      |         Title        |        Author        |  Quantity |    Status   |");
         System.out.println("+-----------------------------------------------------------------------------------------+");
 
-        for (Map<String, Object> row : books) {
-            System.out.printf("| %15s | %-20s | %-20s |  %8s | %-11s |\n",
-                    row.get("isbn"), row.get("title"), row.get("name"),
-                    row.get("quantity"), row.get("status"));
+        if (books.isEmpty()) {
+            System.out.println("|                                        No Result                                        |");
+        } else {
+            for (Map<String, Object> row : books) {
+                System.out.printf("| %15s | %-20s | %-20s |  %8s | %-11s |\n",
+                        row.get("isbn"), row.get("title"), row.get("name"),
+                        row.get("quantity"), row.get("status"));
+            }
         }
 
         System.out.println("+-----------------------------------------------------------------------------------------+\n");
@@ -23,11 +27,14 @@ public class DisplayTable {
         System.out.println("+------------------------------------------------------------------------------------+");
         System.out.println("|   Member ID   |   First Name   |   Last Name   |   Gender   |   Membership Number  |");
         System.out.println("+------------------------------------------------------------------------------------+");
-
-        for (Map<String, Object> row : members) {
-            System.out.printf("|  %12s | %-14s | %-13s | %-10s |  %19s |\n",
-                    row.get("id"), row.get("first_name"), row.get("last_name"),
-                    row.get("gender"), row.get("membership_number"));
+        if (members.isEmpty()) {
+            System.out.println("|                                      No Result                                     |");
+        } else {
+            for (Map<String, Object> row : members) {
+                System.out.printf("|  %12s | %-14s | %-13s | %-10s |  %19s |\n",
+                        row.get("id"), row.get("first_name"), row.get("last_name"),
+                        row.get("gender"), row.get("membership_number"));
+            }
         }
 
         System.out.println("+------------------------------------------------------------------------------------+\n");
