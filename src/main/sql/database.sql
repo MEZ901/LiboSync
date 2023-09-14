@@ -193,6 +193,89 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Dumping routines for database 'LibroSync'
+--
+/*!50003 DROP PROCEDURE IF EXISTS `InsertAndReturn` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertAndReturn`(
+    IN table_name VARCHAR(255),
+    IN column_names VARCHAR(255), 
+    IN column_values VARCHAR(255) 
+)
+BEGIN
+    SET @sql_query = CONCAT('INSERT INTO ', table_name, ' (', column_names, ') VALUES (', column_values, ')');
+   
+--    INSERT INTO debug_log (log_text) VALUES (@sql_query);
+   
+    PREPARE stmt FROM @sql_query;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+
+    IF table_name = 'book' THEN
+        SET @primary_key_value = (SELECT SUBSTRING_INDEX(column_values, ',', 1));
+        SET @select_query = CONCAT('SELECT * FROM ', table_name, ' INNER JOIN author ON book.author_id = author.id WHERE isbn = ', @primary_key_value);
+       
+--        INSERT INTO debug_log (log_text) VALUES (@select_query);
+    
+    ELSE
+		SET @primary_key_value = LAST_INSERT_ID();
+        SET @select_query = CONCAT('SELECT * FROM ', table_name, ' WHERE id = @primary_key_value');
+    END IF;
+   
+     PREPARE stmt FROM @select_query;
+     EXECUTE stmt;
+     DEALLOCATE PREPARE stmt;
+    
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `UpdateBookStatus` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateBookStatus`(IN book_isbn VARCHAR(255))
+BEGIN
+    DECLARE new_quantity INT;
+    DECLARE isbn_exists INT;
+
+    SELECT quantity INTO new_quantity FROM book WHERE isbn = book_isbn;
+
+	IF new_quantity > 0 THEN
+        UPDATE book SET status = 'AVAILABLE' WHERE isbn = book_isbn;
+    ELSE
+        SET @reservation_count = (SELECT COUNT(*) FROM reservation WHERE isbn = book_isbn);
+        
+        IF @reservation_count > 0 THEN
+            UPDATE book SET status = 'BORROWED' WHERE isbn = book_isbn;
+        ELSE
+            UPDATE book SET status = 'LOST' WHERE isbn = book_isbn;
+        END IF;
+    END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -203,4 +286,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-14 16:45:42
+-- Dump completed on 2023-09-14 17:01:26
