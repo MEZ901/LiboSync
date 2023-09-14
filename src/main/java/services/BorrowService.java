@@ -93,7 +93,6 @@ public class BorrowService {
                     data.put("isbn", bookCriteria.get("isbn"));
                     data.put("member_id", member.get(0).get("id"));
                     data.put("borrowing_date", formattedDate);
-                    data.put("has_been_returned", false);
                     break;
                 case 2:
                     return;
@@ -115,13 +114,35 @@ public class BorrowService {
         Map<String, Object> dataToUpdate = new HashMap<>();
         List<Map<String, Object>> borrowedBook;
 
-        System.out.println("\n================= Return Book =================\n");
-
         List<Map<String, Object>> book = libraryService.findBook(whereCriteria);
         if (book.isEmpty()) return;
 
         List<Map<String, Object>> member = memberService.findMember();
         if (member.isEmpty()) return;
+
+        System.out.println("\n================= Return Book =================\n");
+
+        borrowedBook = findBorrowedBook(book, member, whereCriteria);
+        if (borrowedBook.isEmpty()) return;
+
+        dataToUpdate.put("has_been_returned", true);
+        dataToUpdate.put("has_been_stolen", false);
+
+        model.update(dataToUpdate, whereCriteria);
+
+        Map<String, Object> whereCriteriaForBook = new HashMap<>();
+        whereCriteriaForBook.put("isbn", whereCriteria.get("isbn"));
+
+        libraryService.incrementBookQuantity(whereCriteriaForBook, (int) book.get(0).get("quantity"), 1);
+
+        System.out.println("\u001B[32mThe book has been returned successfully\u001B[0m\n");
+
+        DisplayTable.callToAction();
+    }
+
+    public List<Map<String, Object>> findBorrowedBook(List<Map<String, Object>> book, List<Map<String, Object>> member, Map<String, Object> whereCriteria) {
+        Scanner scanner = new Scanner(System.in);
+        List<Map<String, Object>> borrowedBook;
 
         whereCriteria.put("member_id", member.get(0).get("id"));
         whereCriteria.put("has_been_returned", false);
@@ -142,7 +163,7 @@ public class BorrowService {
 
                 switch (choice) {
                     case 1:
-                        return;
+                        return borrowedBook;
                     case 0:
                         System.exit(0);
                         break;
@@ -153,16 +174,6 @@ public class BorrowService {
             } while(true);
         }
 
-        dataToUpdate.put("has_been_returned", true);
-        model.update(dataToUpdate, whereCriteria);
-
-        Map<String, Object> whereCriteriaForBook = new HashMap<>();
-        whereCriteriaForBook.put("isbn", whereCriteria.get("isbn"));
-
-        libraryService.incrementBookQuantity(whereCriteriaForBook, (int) book.get(0).get("quantity"), 1);
-
-        System.out.println("\n\u001B[32mThe book has been returned successfully\u001B[0m");
-
-        DisplayTable.callToAction();
+        return borrowedBook;
     }
 }
