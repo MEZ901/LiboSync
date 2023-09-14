@@ -77,6 +77,7 @@ public class LostService {
                     } while (ch != 1);
                     break;
                 case 2:
+                    System.out.println("This feature is not available yet");
                     break;
                 default:
                     System.out.println("Invalid choice, please try again");
