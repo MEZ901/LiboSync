@@ -12,6 +12,8 @@ public class SearchService {
         SearchRepository searchRepository = new SearchRepository();
         Scanner scanner = new Scanner(System.in);
 
+        System.out.println("\n================= Search for Book =================\n");
+
         System.out.print("Enter the book title/author: ");
         String searchQuery = scanner.nextLine();
 

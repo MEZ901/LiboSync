@@ -1,7 +1,5 @@
 package src.main.java.services;
 
-import src.main.java.LibroSyncApp;
-import src.main.java.models.Member;
 import src.main.java.repository.Model;
 import src.main.java.utilities.DisplayTable;
 
@@ -18,11 +16,14 @@ public class BorrowService {
         Map<String, Object> data = new HashMap<>();
         Map<String, Object> bookCriteria = new HashMap<>();
 
+        System.out.println("\n================= Borrow Book =================\n");
+
         List<Map<String, Object>> book = libraryService.findBook(bookCriteria);
         if (book.isEmpty()) {
             return;
         } else if ((int) book.get(0).get("quantity") == 0) {
-            System.out.println("\n\u001B[31mThis book currently " + (book.get(0).get("status").equals("BORROWED") ? "borrowed" : "lost") + " you can't make any reservation\u001B[0m\n");
+            String status = (String) book.get(0).get("status");
+            System.out.println("\n\u001B[31mThis book currently " + status.toLowerCase() + " you can't make any reservation\u001B[0m\n");
 
             System.out.println("1. back to menu");
             System.out.println("0. Exit");
@@ -108,5 +109,60 @@ public class BorrowService {
         System.out.println("\n\u001B[32mThe reservation has been created successfully!\u001B[0m");
     }
 
-    public void returnBook() {}
+    public void returnBook() {
+        Scanner scanner = new Scanner(System.in);
+        Map<String, Object> whereCriteria = new HashMap<>();
+        Map<String, Object> dataToUpdate = new HashMap<>();
+        List<Map<String, Object>> borrowedBook;
+
+        System.out.println("\n================= Return Book =================\n");
+
+        List<Map<String, Object>> book = libraryService.findBook(whereCriteria);
+        if (book.isEmpty()) return;
+
+        List<Map<String, Object>> member = memberService.findMember();
+        if (member.isEmpty()) return;
+
+        whereCriteria.put("member_id", member.get(0).get("id"));
+        whereCriteria.put("has_been_returned", false);
+
+        borrowedBook = model.find(whereCriteria, null);
+
+        if (borrowedBook.isEmpty()){
+            System.out.println("\n\u001B[31mThere's no book with this isbn borrowed to this member.\u001B[0m\n");
+
+            System.out.println("1. back to menu");
+            System.out.println("0. Exit");
+
+            int choice;
+            do {
+                System.out.print("Enter your choice: ");
+                choice = scanner.nextInt();
+                scanner.nextLine();
+
+                switch (choice) {
+                    case 1:
+                        return;
+                    case 0:
+                        System.exit(0);
+                        break;
+                    default:
+                        System.out.println("Invalid choice, please try again.");
+                        break;
+                }
+            } while(true);
+        }
+
+        dataToUpdate.put("has_been_returned", true);
+        model.update(dataToUpdate, whereCriteria);
+
+        Map<String, Object> whereCriteriaForBook = new HashMap<>();
+        whereCriteriaForBook.put("isbn", whereCriteria.get("isbn"));
+
+        libraryService.incrementBookQuantity(whereCriteriaForBook, (int) book.get(0).get("quantity"), 1);
+
+        System.out.println("\n\u001B[32mThe book has been returned successfully\u001B[0m");
+
+        DisplayTable.callToAction();
+    }
 }
