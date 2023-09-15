@@ -109,10 +109,9 @@ public class BorrowService {
     }
 
     public void returnBook() {
-        Scanner scanner = new Scanner(System.in);
         Map<String, Object> whereCriteria = new HashMap<>();
         Map<String, Object> dataToUpdate = new HashMap<>();
-        List<Map<String, Object>> borrowedBook;
+        List<Map<String, Object>> reservation;
 
         List<Map<String, Object>> book = libraryService.findBook(whereCriteria);
         if (book.isEmpty()) return;
@@ -122,8 +121,8 @@ public class BorrowService {
 
         System.out.println("\n================= Return Book =================\n");
 
-        borrowedBook = findBorrowedBook(book, member, whereCriteria);
-        if (borrowedBook.isEmpty()) return;
+        reservation = findReservation(book, member, whereCriteria);
+        if (reservation.isEmpty()) return;
 
         dataToUpdate.put("has_been_returned", true);
         dataToUpdate.put("has_been_stolen", false);
@@ -140,10 +139,11 @@ public class BorrowService {
         DisplayTable.callToAction();
     }
 
-    public List<Map<String, Object>> findBorrowedBook(List<Map<String, Object>> book, List<Map<String, Object>> member, Map<String, Object> whereCriteria) {
+    public List<Map<String, Object>> findReservation(List<Map<String, Object>> book, List<Map<String, Object>> member, Map<String, Object> whereCriteria) {
         Scanner scanner = new Scanner(System.in);
         List<Map<String, Object>> borrowedBook;
 
+        if (!whereCriteria.containsKey("isbn")) whereCriteria.put("isbn", book.get(0).get("isbn"));
         whereCriteria.put("member_id", member.get(0).get("id"));
         whereCriteria.put("has_been_returned", false);
 
@@ -175,5 +175,11 @@ public class BorrowService {
         }
 
         return borrowedBook;
+    }
+
+    public void declareReservationAsStolen(Map<String, Object> whereCriteria) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("has_been_stolen", true);
+        model.update(data, whereCriteria);
     }
 }

@@ -1,6 +1,5 @@
 package src.main.java.services;
 
-import src.main.java.repository.Model;
 import src.main.java.repository.StatisticsRepository;
 import src.main.java.utilities.DisplayTable;
 
