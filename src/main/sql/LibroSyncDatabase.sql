@@ -26,7 +26,7 @@ CREATE TABLE `author` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,29 +68,6 @@ LOCK TABLES `book` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `debug_log`
---
-
-DROP TABLE IF EXISTS `debug_log`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `debug_log` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `log_text` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `debug_log`
---
-
-LOCK TABLES `debug_log` WRITE;
-/*!40000 ALTER TABLE `debug_log` DISABLE KEYS */;
-/*!40000 ALTER TABLE `debug_log` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `lost_book`
 --
 
@@ -104,7 +81,7 @@ CREATE TABLE `lost_book` (
   PRIMARY KEY (`id`),
   KEY `isbn` (`isbn`),
   CONSTRAINT `lost_book_ibfk_1` FOREIGN KEY (`isbn`) REFERENCES `book` (`isbn`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,7 +108,7 @@ CREATE TABLE `member` (
   `membership_number` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uc_membership_number` (`membership_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -162,7 +139,7 @@ CREATE TABLE `reservation` (
   KEY `member_id` (`member_id`),
   CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`isbn`) REFERENCES `book` (`isbn`),
   CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -262,7 +239,7 @@ BEGIN
 	IF new_quantity > 0 THEN
         UPDATE book SET status = 'AVAILABLE' WHERE isbn = book_isbn;
     ELSE
-        SET @reservation_count = (SELECT COUNT(*) FROM reservation WHERE isbn = book_isbn);
+        SET @reservation_count = (SELECT COUNT(*) FROM reservation WHERE isbn = book_isbn AND has_been_returned = false AND has_been_stolen = false);
         
         IF @reservation_count > 0 THEN
             UPDATE book SET status = 'BORROWED' WHERE isbn = book_isbn;
@@ -286,4 +263,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-14 17:01:26
+-- Dump completed on 2023-09-15  9:07:00
