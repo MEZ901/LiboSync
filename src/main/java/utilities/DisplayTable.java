@@ -24,21 +24,21 @@ public class DisplayTable {
     }
 
     public static void displayReservation(List<Map<String, Object>> reservations) {
-        System.out.println("+-----------------------------------------------------------------------------------------------+");
-        System.out.println("|   Reservation ID   |       ISBN      |    Member ID    |  Borrowing Date  | Returned | Stolen |");
-        System.out.println("+-----------------------------------------------------------------------------------------------+");
+        System.out.println("+---------------------------------------------------------------------------+");
+        System.out.println("|   Reservation ID   |       ISBN      |    Member ID    |  Borrowing Date  |");
+        System.out.println("+---------------------------------------------------------------------------+");
 
         if (reservations.isEmpty()) {
-            System.out.println("|                                        No Reservations                                        |");
+            System.out.println("|                              No Reservations                              |");
         } else {
             for (Map<String, Object> row : reservations) {
-                System.out.printf("|  %17s | %15s | %15s | %16s | %8s | %6s |\n",
+                System.out.printf("|  %17s | %15s | %15s | %16s |\n",
                         row.get("id"), row.get("isbn"), row.get("member_id"),
-                        row.get("borrowing_date"), row.get("has_been_returned"), row.get("has_been_stolen"));
+                        row.get("borrowing_date"));
             }
         }
 
-        System.out.println("+------------------------------------------------------------------------------------------------+\n");
+        System.out.println("+---------------------------------------------------------------------------+");
     }
 
     public static void displayMembers(List<Map<String, Object>> members) {

@@ -113,13 +113,13 @@ public class BorrowService {
         Map<String, Object> dataToUpdate = new HashMap<>();
         List<Map<String, Object>> reservation;
 
+        System.out.println("\n================= Return Book =================\n");
+
         List<Map<String, Object>> book = libraryService.findBook(whereCriteria);
         if (book.isEmpty()) return;
 
         List<Map<String, Object>> member = memberService.findMember();
         if (member.isEmpty()) return;
-
-        System.out.println("\n================= Return Book =================\n");
 
         reservation = findReservation(book, member, whereCriteria);
         if (reservation.isEmpty()) return;
